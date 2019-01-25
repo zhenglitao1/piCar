@@ -2,7 +2,6 @@
 import socket
 from enum import IntEnum
 from MotorModule.Motor import Motor
-from RelayModule.Relay import Relay
 import traceback
 import threading
 import time
@@ -45,14 +44,6 @@ def motorAction(motor,command):
     elif command=='DirStop':
         motor.stop()
 
-def relayAction(relay,command):
-    if command=='relayOpen':
-        relay.open()
-        print('relay is open')
-    elif command=='relayClose':
-        relay.close()
-        print('relay is close')
-
 def setCameraAction(command):
     if command=='CamUp' or command=='CamDown' or command=='CamLeft' or command=='CamRight':
         return command
@@ -83,9 +74,6 @@ def main():
     global cameraActionState #Set a state variable for steering module
     cameraActionState='CamStop'
 
-    relay=Relay(12)
-    relay.setup()
-
     #Init oled module
     # oled=OLED(16,20,0,0)
     # oled.setup()
@@ -108,15 +96,10 @@ def main():
                     data=bytes.decode(data)
                     if(len(data)==0):
                         print('client is closed')
-                        # oled.writeArea4(' Disconnect')
+                        oled.writeArea4(' Disconnect')
                         break
-
-                    if(data=='relayOpen' or data=='relayClose'):
-                        relayAction(relay, data)
-                    else:
-                        motorAction(motor, data)
-                        cameraActionState = setCameraAction(data)
-
+                    motorAction(motor,data)
+                    cameraActionState=setCameraAction(data)
                 except socket.error:
                     continue
                 except KeyboardInterrupt,e:
@@ -127,11 +110,11 @@ def main():
             motor.clear()
             steer.cleanup()
             tcpServer.close()
-            # oled.clear()
+            oled.clear()
         except Exception,e1:
             traceback.print_exc()
             motor.clear()
             steer.cleanup()
             tcpServer.close()
-            # oled.clear()
+            oled.clear()
 main()
