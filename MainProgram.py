@@ -105,13 +105,15 @@ def main():
                 cameraAction(steer,cameraActionState)
                 try:
                     data=client.recv(1024)
+                    print(data)
                     data=bytes.decode(data)
                     if(len(data)==0):
                         print('client is closed')
                         oled.writeArea4(' Disconnect')
                         break
+                    print('开始打印data')
                     print(data)
-
+                    relayAction(relay, data)
                     if(data=='relayOpen' or data=='relayClose'):
                         relayAction(relay, data)
                     else:
