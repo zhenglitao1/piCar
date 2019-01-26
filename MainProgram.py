@@ -112,11 +112,11 @@ def main():
                         break
                     print(data)
 
-                    # if(data=='relayOpen' or data=='relayClose'):
-                    #     relayAction(relay, data)
-                    # else:
-                    motorAction(motor, data)
-                    cameraActionState = setCameraAction(data)
+                    if(data=='relayOpen' or data=='relayClose'):
+                        relayAction(relay, data)
+                    else:
+                        motorAction(motor, data)
+                        cameraActionState = setCameraAction(data)
 
                 except socket.error:
                     continue
