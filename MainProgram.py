@@ -87,18 +87,18 @@ def main():
     relay.setup()
 
     #Init oled module
-    # oled=OLED(16,20,0,0)
-    # oled.setup()
+    oled=OLED(16,20,0,0)
+    oled.setup()
 
-    # oled.writeArea1(host)
-    # oled.writeArea3('State:')
-    # oled.writeArea4(' Disconnect')
+    oled.writeArea1(host)
+    oled.writeArea3('State:')
+    oled.writeArea4(' Disconnect')
     while True:
         try:
             time.sleep(0.001)
             (client,addr)=tcpServer.accept()
             print('accept the client!')
-            # oled.writeArea4(' Connect')
+            oled.writeArea4(' Connect')
             client.setblocking(0)
             while True:
                 time.sleep(0.001)
@@ -108,8 +108,9 @@ def main():
                     data=bytes.decode(data)
                     if(len(data)==0):
                         print('client is closed')
-                        # oled.writeArea4(' Disconnect')
+                        oled.writeArea4(' Disconnect')
                         break
+                    print(data)
 
                     if(data=='relayOpen' or data=='relayClose'):
                         relayAction(relay, data)
@@ -127,11 +128,11 @@ def main():
             motor.clear()
             steer.cleanup()
             tcpServer.close()
-            # oled.clear()
+            oled.clear()
         except Exception,e1:
             traceback.print_exc()
             motor.clear()
             steer.cleanup()
             tcpServer.close()
-            # oled.clear()
+            oled.clear()
 main()
