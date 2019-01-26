@@ -16,14 +16,14 @@ server.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1) #enable broadcast
 server.connect((HOST,PORT))
 print('now starting to send frames...')
 capture=cv2.VideoCapture(0)
-capture.set(cv2.CAP_PROP_FRAME_WIDTH,WIDTH)
-capture.set(cv2.CAP_PROP_FRAME_HEIGHT,HEIGHT)
+capture.set(cv2.cv.CAP_PROP_FRAME_WIDTH,WIDTH)
+capture.set(cv2.cv.CAP_PROP_FRAME_HEIGHT,HEIGHT)
 try:
     while True:
         time.sleep(0.01)
         success,frame=capture.read()
         if success and frame is not None:
-            result,imgencode=cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,90])
+            result,imgencode=cv2.imencode('.jpg',frame,[cv2.cv.IMWRITE_JPEG_QUALITY,90])
             #result,imgencode=cv2.imencode('.webp',frame,[cv2.IMWRITE_WEBP_QUALITY,20])
             #print(len(imgencode))
             server.sendall(imgencode)
