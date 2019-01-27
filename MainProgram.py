@@ -121,7 +121,7 @@ def main():
 
                 except socket.error:
                     continue
-                except KeyboardInterrupt,e:
+                except KeyboardInterrupt as e:
                     raise e
         except socket.error:
             pass
@@ -130,7 +130,7 @@ def main():
             steer.cleanup()
             tcpServer.close()
             oled.clear()
-        except Exception,e1:
+        except Exception as e1:
             traceback.print_exc()
             motor.clear()
             steer.cleanup()
